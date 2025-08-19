@@ -20,7 +20,7 @@ dart --version
 2. Abra o terminal na pasta onde está o arquivo e execute:
 
 ```bash
-dart run calculadora.dart
+dart run 
 ```
 
 4. Siga as instruções no terminal:
