@@ -1,23 +1,23 @@
 import 'dart:io';
 
 class Calculadora {
-  double somar(double a, double b) {
-    return a + b;
+  double somar(double num1, double num2) {
+    return num1 + num2;
   }
 
-  double subtrair(double a, double b) {
-    return a - b;
+  double subtrair(double num1, double num2) {
+    return num1 - num2;
   }
 
-  double multiplicar(double a, double b) {
-    return a * b;
+  double multiplicar(double num1, double num2) {
+    return num1 * num2;
   }
 
-  double dividir(double a, double b) {
-    if (b == 0) {
+  double dividir(double num1, double num2) {
+    if (num2 == 0) {
       throw Exception("Não é possível dividir por zero!");
     }
-    return a / b;
+    return num1 / num2;
   }
 }
 
