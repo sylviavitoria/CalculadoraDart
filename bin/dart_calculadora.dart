@@ -1,66 +1,82 @@
 import 'dart:io';
 
 class Calculadora {
-  double somar(double num1, double num2) {
-    return num1 + num2;
+  double somar(List<double> numeros) {
+    return numeros.reduce((acumulador, numeroAtual) => acumulador + numeroAtual);
   }
 
-  double subtrair(double num1, double num2) {
-    return num1 - num2;
+  double subtrair(List<double> numeros) {
+    return numeros.reduce((acumulador, numeroAtual) => acumulador - numeroAtual);
   }
 
-  double multiplicar(double num1, double num2) {
-    return num1 * num2;
+  double multiplicar(List<double> numeros) {
+    return numeros.reduce((acumulador, numeroAtual) => acumulador * numeroAtual);
   }
 
-  double dividir(double num1, double num2) {
-    if (num2 == 0) {
-      throw Exception("Não é possível dividir por zero!");
-    }
-    return num1 / num2;
+  double dividir(List<double> numeros) {
+    return numeros.reduce((acumulador, numeroAtual) {
+      if (numeroAtual == 0) throw Exception("Não é possível dividir por zero!");
+      return acumulador / numeroAtual;
+    });
   }
 }
 
 void main() {
   final calc = Calculadora();
 
-  print("Escolha a operação:");
-  print("1 - Soma");
-  print("2 - Subtração");
-  print("3 - Multiplicação");
-  print("4 - Divisão");
-  stdout.write("Digite o número da operação: ");
-  int opcao = int.parse(stdin.readLineSync()!);
+  String? entrada = stdin.readLineSync();
 
-  stdout.write("Digite o primeiro número: ");
-  double num1 = double.parse(stdin.readLineSync()!);
+  if (entrada == null || entrada.trim().isEmpty) {
+    print("Entrada inválida!");
+    return;
+  }
 
-  stdout.write("Digite o segundo número: ");
-  double num2 = double.parse(stdin.readLineSync()!);
+  List<String> partes = entrada.split(" ");
+
+  Set<String> operadoresEncontrados = partes
+      .where((parte) => ["+", "-", "*", "/"].contains(parte))
+      .toSet();
+
+  if (operadoresEncontrados.length != 1) {
+    print("Use apenas um tipo de operação por vez!");
+    return;
+  }
+
+  String operador = operadoresEncontrados.first;
+
+  List<double> numeros = partes
+      .where((parte) => parte != operador)
+      .map((parte) => double.parse(parte))
+      .toList();
+
+  if (numeros.length < 2) {
+    print("É necessário pelo menos dois números!");
+    return;
+  }
 
   double resultado;
 
-  switch (opcao) {
-    case 1:
-      resultado = calc.somar(num1, num2);
-      break;
-    case 2:
-      resultado = calc.subtrair(num1, num2);
-      break;
-    case 3:
-      resultado = calc.multiplicar(num1, num2);
-      break;
-    case 4:
-      try {
-        resultado = calc.dividir(num1, num2);
-      } catch (e) {
-        print(e);
+  try {
+    switch (operador) {
+      case "+":
+        resultado = calc.somar(numeros);
+        break;
+      case "-":
+        resultado = calc.subtrair(numeros);
+        break;
+      case "*":
+        resultado = calc.multiplicar(numeros);
+        break;
+      case "/":
+        resultado = calc.dividir(numeros);
+        break;
+      default:
+        print("Operador inválido!");
         return;
-      }
-      break;
-    default:
-      print("Opção inválida!");
-      return;
+    }
+  } catch (erro) {
+    print(erro);
+    return;
   }
 
   print("Resultado: $resultado");
