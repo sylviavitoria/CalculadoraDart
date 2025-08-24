@@ -23,7 +23,7 @@ dart --version
 2. Abra o terminal na pasta onde está o arquivo `.dart` e execute:
 
 ```bash
-dart run nome_do_arquivo.dart
+dart run 
 ```
 
 3. Digite a expressão desejada e pressione **Enter**.
