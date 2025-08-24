@@ -1,13 +1,16 @@
 # Calculadora em Dart
 
-Este é um projeto simples de uma **calculadora em Dart** que realiza as quatro operações básicas: soma, subtração, multiplicação e divisão. O programa é executado via terminal e permite que o usuário escolha a operação e informe os números.
+Este é um projeto simples de uma calculadora em Dart que realiza as quatro operações básicas: soma, subtração, multiplicação e divisão. 
+O programa suporta múltiplos números e as quatro operações básicas, respeitando a precedência entre multiplicação/divisão e soma/subtração.  
 
 ## Funcionalidades
 
-* Soma
-* Subtração
-* Multiplicação
-* Divisão (com verificação para divisão por zero)
+* **Soma (+)**
+* **Subtração (-)**
+* **Multiplicação (*)**
+* **Divisão (/)** (com verificação para divisão por zero)
+* Suporte a expressões com **mais de dois números**  
+  Exemplo: `10 + 5 * 2 - 4 / 2`
 
 ## Como rodar
 
@@ -17,34 +20,36 @@ Este é um projeto simples de uma **calculadora em Dart** que realiza as quatro 
 dart --version
 ```
 
-2. Abra o terminal na pasta onde está o arquivo e execute:
+2. Abra o terminal na pasta onde está o arquivo `.dart` e execute:
 
 ```bash
-dart run 
+dart run nome_do_arquivo.dart
 ```
 
-4. Siga as instruções no terminal:
+3. Digite a expressão desejada e pressione **Enter**.
 
-   * Escolha a operação (1 a 4)
-   * Digite o primeiro número
-   * Digite o segundo número
-   * O resultado será exibido no terminal
+---
 
 ## Exemplo de uso
 
 ```text
-Escolha a operação:
-1 - Soma
-2 - Subtração
-3 - Multiplicação
-4 - Divisão
-Digite o número da operação: 1
-Digite o primeiro número: 10
-Digite o segundo número: 5
-Resultado: 15.0
+10 + 5 * 2 - 4 / 2
+Resultado: 18.0
 ```
+
+### Outro exemplo
+```text
+50 / 2 + 3 * 4
+Resultado: 37.0
+```
+
+---
 
 ## Observações
 
-* Se o usuário tentar dividir por zero, o programa exibirá uma mensagem de erro.
-* Apenas números válidos devem ser digitados, caso contrário, o programa pode lançar uma exceção.
+* O programa **respeita a ordem das operações matemáticas**:
+  * Multiplicação e divisão são resolvidas primeiro.
+  * Soma e subtração são resolvidas depois.
+* Caso o usuário tente **dividir por zero**, será exibida uma mensagem de erro.
+* Se a entrada for inválida (vazia ou não numérica), o programa exibirá uma mensagem de erro apropriada.
+* Espaços na expressão são ignorados (`10 + 2` funciona da mesma forma que `10+2`).
