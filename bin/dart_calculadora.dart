@@ -1,23 +1,50 @@
 import 'dart:io';
 
 class Calculadora {
-  double somar(List<double> numeros) {
-    return numeros.reduce((acumulador, numeroAtual) => acumulador + numeroAtual);
-  }
+  double calcularExpressao(String expressao) {
+    expressao = expressao.replaceAll(" ", "");
 
-  double subtrair(List<double> numeros) {
-    return numeros.reduce((acumulador, numeroAtual) => acumulador - numeroAtual);
-  }
+    List<String> partes = [];
+    String numero = "";
+    for (int i = 0; i < expressao.length; i++) {
+      String char = expressao[i];
+      if ("+-*/".contains(char)) {
+        if (numero.isNotEmpty) {
+          partes.add(numero);
+          numero = "";
+        }
+        partes.add(char);
+      } else {
+        numero += char;
+      }
+    }
+    if (numero.isNotEmpty) partes.add(numero);
 
-  double multiplicar(List<double> numeros) {
-    return numeros.reduce((acumulador, numeroAtual) => acumulador * numeroAtual);
-  }
+    for (int i = 0; i < partes.length; i++) {
+      if (partes[i] == "*" || partes[i] == "/") {
+        double a = double.parse(partes[i - 1]);
+        double b = double.parse(partes[i + 1]);
+        double resultado =
+            (partes[i] == "*") ? a * b : (b == 0 ? throw Exception("Divisão por zero!") : a / b);
 
-  double dividir(List<double> numeros) {
-    return numeros.reduce((acumulador, numeroAtual) {
-      if (numeroAtual == 0) throw Exception("Não é possível dividir por zero!");
-      return acumulador / numeroAtual;
-    });
+        partes.replaceRange(i - 1, i + 2, [resultado.toString()]);
+        i--; 
+      }
+    }
+
+    double resultado = double.parse(partes[0]);
+    for (int i = 1; i < partes.length; i += 2) {
+      String op = partes[i];
+      double valor = double.parse(partes[i + 1]);
+
+      if (op == "+") {
+        resultado += valor;
+      } else if (op == "-") {
+        resultado -= valor;
+      }
+    }
+
+    return resultado;
   }
 }
 
@@ -31,53 +58,10 @@ void main() {
     return;
   }
 
-  List<String> partes = entrada.split(" ");
-
-  Set<String> operadoresEncontrados = partes
-      .where((parte) => ["+", "-", "*", "/"].contains(parte))
-      .toSet();
-
-  if (operadoresEncontrados.length != 1) {
-    print("Use apenas um tipo de operação por vez!");
-    return;
-  }
-
-  String operador = operadoresEncontrados.first;
-
-  List<double> numeros = partes
-      .where((parte) => parte != operador)
-      .map((parte) => double.parse(parte))
-      .toList();
-
-  if (numeros.length < 2) {
-    print("É necessário pelo menos dois números!");
-    return;
-  }
-
-  double resultado;
-
   try {
-    switch (operador) {
-      case "+":
-        resultado = calc.somar(numeros);
-        break;
-      case "-":
-        resultado = calc.subtrair(numeros);
-        break;
-      case "*":
-        resultado = calc.multiplicar(numeros);
-        break;
-      case "/":
-        resultado = calc.dividir(numeros);
-        break;
-      default:
-        print("Operador inválido!");
-        return;
-    }
-  } catch (erro) {
-    print(erro);
-    return;
+    double resultado = calc.calcularExpressao(entrada);
+    print("Resultado: $resultado");
+  } catch (e) {
+    print("Erro: $e");
   }
-
-  print("Resultado: $resultado");
 }
